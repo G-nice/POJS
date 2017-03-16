@@ -23,7 +23,7 @@ namespace POJS_Server
         public CodeJudge()
         {
             //compilerPath = @"\gcc.exe";
-            compilerPath = @"E:\Visual Studio 2015\Projects\POJS\MinGW\bin\gcc.exe";
+            compilerPath = @".\MinGW\bin\gcc.exe";
             workPath = System.Environment.CurrentDirectory;
             //uniqueID = getThreadID().ToString() + DateTime.UtcNow.ToFileTimeUtc().ToString();
             uniqueID = GetThreadID().ToString();
@@ -32,22 +32,28 @@ namespace POJS_Server
             Console.WriteLine(uniqueID);
         }
 
-        public CodeJudge(string gccPath, string currentdirectory)
+        public CodeJudge(string _compilerPath, string _workPath)
         {
-            compilerPath = gccPath;
-            workPath = currentdirectory;
+            compilerPath = _compilerPath;
+            workPath = _workPath;
             uniqueID = GetThreadID().ToString();
+            cfilePath = workPath + @"\" + uniqueID + ".c";
+            generatedEXEPath = workPath + @"\" + uniqueID + ".exe";
         }
 
         public bool Complie(string sorceCode)
         {
             int exitcode = 0;
+            if (File.Exists(cfilePath))
+                File.Delete(cfilePath);
             FileStream cfile = new FileStream(cfilePath, FileMode.OpenOrCreate);
             StreamWriter sw = new StreamWriter(cfile);
             sw.Write(sorceCode);
             sw.Close();
             cfile.Close();
 
+            if (File.Exists(generatedEXEPath))
+                File.Delete(generatedEXEPath);
             Process p = new Process();
             p.StartInfo.WorkingDirectory = workPath;
             p.StartInfo.FileName = compilerPath;
@@ -81,8 +87,8 @@ namespace POJS_Server
                     p.StartInfo.FileName = generatedEXEPath;
                     p.StartInfo.UseShellExecute = false;
                     if(input != null)
-                        p.StartInfo.RedirectStandardOutput = true;
-                    p.StartInfo.RedirectStandardInput = true;
+                        p.StartInfo.RedirectStandardInput = true;
+                    p.StartInfo.RedirectStandardOutput = true;
                     p.StartInfo.CreateNoWindow = true;
                     p.Start();
                     if (p.HasExited)

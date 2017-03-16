@@ -69,6 +69,12 @@ namespace POJS_Client
                 }
                 if (result.Equals("OK\r\n"))
                     this.Dispatcher.Invoke((Action)delegate () { set_check_ressult("1"); });
+                else
+                {
+                    MessageBox.Show("服务器地址或端口填写错误，请检查服务器配置", "配  置");
+                    this.Dispatcher.Invoke((Action)delegate () { set_check_ressult("2"); });
+                }
+
             }
             catch(WebException e)
             {
@@ -88,8 +94,6 @@ namespace POJS_Client
                     req.Abort();
                 this.Dispatcher.Invoke((Action)delegate () { button_check.IsEnabled = true; });
             }
-
-            //return check_result;
         }
 
 
@@ -100,6 +104,12 @@ namespace POJS_Client
                 textBox_result.Text = string.Empty;
                 get_sorcecode_input_output();
             });
+
+            if (sorcecode.Length == 0 || input.Length ==0 || output.Length == 0)
+            {
+                MessageBox.Show("源代码、输入、输出都不能为空","提交");
+                return;
+            }
 
             string result = "";
             string url = "http://" + serverIP + ":" + port + "/submit";
@@ -114,7 +124,7 @@ namespace POJS_Client
                 req.ContentType = "application/x-www-form-urlencoded";
 
                 #region 添加Post 参数  
-                byte[] data = Encoding.UTF8.GetBytes(sorcecode + "#&" + input + "#&" + output);
+                byte[] data = Encoding.UTF8.GetBytes(sorcecode + "#$" + input + "#$" + output);
                 req.ContentLength = data.Length;
                 using (Stream reqStream = req.GetRequestStream())
                 {

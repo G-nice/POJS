@@ -185,6 +185,13 @@ namespace POJS_Server
             outputStream.WriteLine("Connection: close");
             outputStream.WriteLine("");
         }
+        public void writeSuccessPic()
+        {
+            outputStream.WriteLine("HTTP/1.0 200 OK");
+            outputStream.WriteLine("Content-Type: image/png");
+            outputStream.WriteLine("Connection: close");
+            outputStream.WriteLine("");
+        }
 
         public void writeFailure()
         {

@@ -1,0 +1,12 @@
+{
+    // 服务器监听ip地址
+    "ServerIP": "127.0.0.1",
+    // 服务器监听端口
+    "ServerPort": "7777",
+    // 编译器中文件gcc的路径
+    "CompilerPath": "E:\\Visual Studio 2015\\Projects\\POJS\\MinGW\\bin\\gcc.exe",
+    // 编译及运行过程文件缓存文件夹位置
+    "WorkPath": ".\\",
+    // web版本对应资源文件路径
+    "ResourcesPath": ".\\Resources\\"
+}
